@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Socket Test</title>
+</head>
+
+<body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>room</title>
+  </head>
+  <body>
+    
+    <div id="root"></div>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    const socket = io("http://localhost:3000");
+
+    socket.on("connect", () => {
+      console.log("Connected:", socket.id);
+    });
+    socket.on("welcome", (msg) => {
+      console.log("Server says:", msg);
+    });
+    function sendMessage(e) {
+      console.log("Button clicked"); // ADD THIS
+      const input = document.getElementById("msgInput");
+      const message = input.value;
+
+      socket.emit("message", message); // 🔥 THIS sends to server
+
+      e.preventDefault()
+      input.value = "";
+    }
+    socket.on("message", (msg) => {
+      console.log("New message:", msg);
+
+      const p = document.createElement("p");
+      p.textContent = msg;
+      document.body.appendChild(p);
+    });
+    </script>
+    <!-- <script type="module" src="../Frontend/src/main.jsx"></script> -->
+  </body>
+  </html>
+
+</body>
+
+</html>

@@ -1,0 +1,233 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.landingPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=4b017d&c2=aa97d0&gt=l&gd=dbb
+*/
+  background: hsla(276, 100%, 25%, 1.0);
+  background: linear-gradient(180deg, hsla(276, 100%, 25%, 1.0), hsla(261, 38%, 71%, 1.0));
+}
+
+.landingPageContainer {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* height: 50%; */
+  width: 70%;
+}
+
+.landingPageText h1 {
+  text-align: center;
+  font-size: 3rem;
+  color: white;
+  margin-bottom: 2rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+}
+
+.landingPageText p {
+  color: rgb(59, 1, 97);
+  font-size: 2rem;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 400;
+  text-align: center;
+}
+
+.buttonbox {
+  margin: 2rem auto;
+  display: flex;
+  width: 60%;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.buttonbox button {
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border: hsla(276, 100%, 25%, 1.0) 2px solid;
+  border-radius: 8px;
+  color: hsla(276, 100%, 25%, 1.0);
+  font-weight: 600;
+  background-color: rgba(0, 0, 0, 0.014);
+  box-shadow: 3px 4px 13px;
+  font-family: "Poppins", sans-serif;
+}
+
+.buttonbox button:hover {
+  box-shadow: 0px 1px 10px;
+  background-color: hsla(276, 100%, 25%, 1.0);
+  color: white;
+}
+
+.vcimage {
+  width: 40%;
+  margin: 1rem auto;
+  border: 2px solid hsla(276, 100%, 25%, 1.0);
+  border-radius: 18px;
+
+  box-shadow: 3px 4px 13px;
+}
+
+.Userlog {
+color: whitesmoke;
+  height: 75%;
+  border-radius: 10px;
+  width: 25%;
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  background-image: url("https://us.123rf.com/450wm/photomafia/photomafia1809/photomafia180900142/109327382-purple-cloudy-rectangular-watercolor-gradient-background-beautiful-abstract-canvas-for.jpg?ver=6");
+  background-size: cover;
+
+  position: absolute;
+  padding: 1rem;
+}
+
+.guest {
+  padding: 1rem;
+  background-color: rgba(196, 8, 8, 0);
+  background-image: url("https://us.123rf.com/450wm/photomafia/photomafia1809/photomafia180900142/109327382-purple-cloudy-rectangular-watercolor-gradient-background-beautiful-abstract-canvas-for.jpg?ver=6");
+  opacity: 1;
+  background-size: cover;
+  width: 30%;
+  aspect-ratio: 3/2;
+  color: whitesmoke;
+  position: absolute;
+  border-radius: 10px;
+  flex-direction: column;
+}
+
+.guest h1 {
+  text-align: center;
+}
+
+.guestform,
+.loginform,
+.signupform {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 1rem auto;
+  font-size: 1.25rem;
+
+}
+.signup{
+  display: none;
+}
+.loginform,.signupform{
+  justify-content: space-between;
+  height: 85%;
+}
+
+.login,.signup {
+  margin: 1rem 0rem 0rem;
+  height: 100%;
+  flex-direction: column;
+}
+
+.Userlog h1 {
+  text-align: center;
+}
+
+.guestform input,
+.loginform input,
+.signupform input {
+  background-color: rgba(0, 0, 0, 0);
+  height: 2rem;
+  border-radius: 5px;
+  margin: 0.2rem 0 0.5rem 0;
+  width: 100%;
+  outline: 0px;
+  border: 1px solid white;
+}
+
+.switch-to-login,
+.Switch-to-signup-btn,
+.switch-to-guest {
+  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  margin: 2rem auto 0rem;
+  display: block;
+  color: rgb(79 5 130);
+  width: 45%;
+  background: rgba(191, 4, 229, 0.164);
+}
+
+.switch-to-login:hover,
+.Switch-to-signup-btn:hover,
+.switch-to-guest:hover {
+  background: rgb(79 5 130);
+  color: white;
+}
+
+.join,.login-btn,.forget-password,.signup-btn {
+  color: white;
+  background: rgb(79 5 130);
+  border: 2px solid white;
+  font-size: 1rem;
+  margin-top: 1rem;
+  border-radius: 5px;
+  padding: 0.5rem 0.8rem;
+  font-weight: 600;
+  width: 100%;
+}
+
+.join:hover,
+.login-btn:hover,
+.forget-password:hover,
+.signup-btn:hover
+ {
+  background: rgba(191, 4, 229, 0.164);
+  color: rgb(79 5 130);
+  border: 2px solid black;
+}
+
+.btn{
+  display: flex;
+  /* justify-self: end ; */
+  margin-top: auto;
+}
+.blood-effect {
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  z-index: 1;
+
+  background: radial-gradient(circle at 20% 20%, red 10%, transparent 40%),
+              radial-gradient(circle at 80% 30%, darkred 10%, transparent 40%),
+              radial-gradient(circle at 50% 80%, crimson 10%, transparent 40%);
+
+  filter: blur(20px);
+  opacity: 0.8;
+}
+.landingstyle {
+display: none;
+  backdrop-Filter: blur(5px);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+.cross{
+    color:white;
+  position:absolute;
+  right:4px;
+  top:-10px;
+  font-size:2.5rem;
+  cursor:default
+}
