@@ -5,14 +5,6 @@ import crypto from "crypto";
 
 
 
-
-const goToRegister = (req, res) => {
-    res.redirect("/register.html");
-}
-const goToLogin = (req, res) => {
-    res.redirect('/login.html')
-}
-
 const register = async (req, res) => {
     let { name, username, password, email } = req.body
     try {
@@ -55,7 +47,7 @@ const login = async (req, res) => {
             let token = crypto.randomBytes(20).toString("hex")
             checkUser.token = token;
             await checkUser.save();
-            return res.status(httpStatus.OK).json({ token: token })
+            return res.status(httpStatus.OK).json({ token: token, message: "login done" })
         }
     } catch (err) {
         return res.status(500).json({ message: `Something went wrong ${err}` })
@@ -79,4 +71,4 @@ const guestUserMeeting = async (req, res) => {
     }
 }
 
-export { register, login, goToRegister, goToLogin, guestUserMeeting } 
+export { register, login, guestUserMeeting } 

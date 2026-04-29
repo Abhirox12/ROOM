@@ -5,6 +5,7 @@ import { createServer } from "node:http";
 import { connectToSocket } from "./Controller/socket.js";
 import { fileURLToPath } from "url";
 import userRouter from "./routes/userRoutes.js";
+import cors from "cors";
 
 // recreate __filename
 const __filename = fileURLToPath(import.meta.url);
@@ -16,6 +17,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = connectToSocket(httpServer)
 
+app.use(cors())
 app.use(express.static(path.join(__dirname, "Public")))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
