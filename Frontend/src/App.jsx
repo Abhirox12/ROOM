@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Landingpage from './pages/landing'
-import { Routes,BrowserRouter as Router, Route } from "react-router-dom"
+import { AuthProvider } from '../context/authcontext'
+import { Routes, BrowserRouter as Router, Route } from "react-router-dom"
 import './App.css'
 
 function App() {
@@ -8,10 +9,11 @@ function App() {
   return (
     <>
       <Router>
-        <Routes>
-          <Route path='/' element={<Landingpage />}></Route>
-
-        </Routes>
+        <AuthProvider >
+          <Routes>
+            <Route path='/' element={<Landingpage />} />
+          </Routes>
+        </AuthProvider>
       </Router>
     </>
   )
