@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
   socket.emit('welcome', 'Hello from server');
 });
 app.get("/",(req,res)=>{
-  res.redirect("/index.html")
+  res.send("connected")
 })
 
 

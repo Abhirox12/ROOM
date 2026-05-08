@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 let messages = {}
 let timeOnline = {}
 let connections = {}
-
+// let clients =[]
 
 export const connectToSocket = (server) => {
     const io = new Server(server, {
@@ -15,9 +15,14 @@ export const connectToSocket = (server) => {
 
     io.on("connection", (socket) => {
         console.log("someone connected");
+        // console.log(clients)
         socket.on("join-call", (roomId) => {
             socket.join(roomId)
-            socket.to(roomId).emit("user-joined", socket.id);
+            console.log("working?")
+              const clients = Array.from(
+        io.sockets.adapter.rooms.get(roomId) || []
+    );
+            io.to(roomId).emit("user-joined", socket.id,clients);
             socket.emit("chat-history", messages[roomId] || []);
 
         })
