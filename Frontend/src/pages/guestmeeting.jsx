@@ -10,8 +10,8 @@ export default function Guestmeeting({ style, switchlogin,display }) {
       <h1 style={{color:"purple"}}>Join Room</h1>
       <div className="guestform">
         <form action="">
-          <label htmlFor="name">Name</label> <br />
-          <input type="text" id='name' name='name' /><br />
+          {/* <label htmlFor="name">Name</label> <br />
+          <input type="text" id='name' name='name' /><br /> */}
           <label htmlFor="meetingCode">Meeting Code</label> <br />
           <input type="text" id='meetingCode' name='meetingCode' />
           <br />

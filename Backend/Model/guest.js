@@ -3,7 +3,7 @@ import { Schema } from "mongoose";
 
 
 const guestSchema = new Schema({
-    name:{
+    username:{
         type:String,
         required:true
     },

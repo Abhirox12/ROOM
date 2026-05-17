@@ -15,14 +15,15 @@ export const connectToSocket = (server) => {
 
     io.on("connection", (socket) => {
         console.log("someone connected");
-        // console.log(clients)
+        // console.log(socket)
         socket.on("join-call", (roomId) => {
             socket.join(roomId)
-            console.log("working?")
-              const clients = Array.from(
-        io.sockets.adapter.rooms.get(roomId) || []
-    );
-            io.to(roomId).emit("user-joined", socket.id,clients);
+            socket.emit("chat-history", messages[roomId] || [])
+
+            const clients = Array.from(
+                io.sockets.adapter.rooms.get(roomId) || []
+            );
+            io.to(roomId).emit("user-joined", socket.id, clients);
             socket.emit("chat-history", messages[roomId] || []);
 
         })
@@ -30,7 +31,7 @@ export const connectToSocket = (server) => {
         socket.on("signal", (toId, message) => {
             io.to(toId).emit("signal", socket.id, message);
         })
-        socket.on("chat-messages", (data, sender, roomId, at) => {
+        socket.on("chat-message", (data, sender, roomId, at) => {
             if (messages[roomId] === undefined) {
                 messages[roomId] = []
             }
@@ -40,9 +41,7 @@ export const connectToSocket = (server) => {
                 socketId: socket.id,
                 at: new Date()
             })
-            socket.to(roomId).emit(sender, data, socket.id, at)
-        })
-        socket.on("chat-message", (data, sender, roomId, at) => {
+
             socket.to(roomId).emit("chat-message", data, sender, socket.id, at)
         })
 
