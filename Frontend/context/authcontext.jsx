@@ -1,5 +1,5 @@
 import axios from "axios";
-import httpStatus   from "http-status";
+import httpStatus from "http-status";
 import { useContext, createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext({})
 
 const client = axios.create({
-baseURL : "http://localhost:3000/"
+    baseURL: "http://localhost:3000/"
 }
 )
 
@@ -45,29 +45,31 @@ export const AuthProvider = ({ children }) => {
 
             console.log(username, password)
             console.log(request)
+            console.log(request.data) // ← check this
+
 
             if (request.status === httpStatus.OK) {
-                localStorage.setItem(request.data.token);
+                localStorage.setItem('token', request.data.token);
                 router("/home")
             }
         } catch (error) {
             throw error
         }
     }
-    const join = async (name,meetingCode)=>{
-        try{
-            let request = await client.post("/guest",{
-                name:name,
-                meetingCode:meetingcode
+    const join = async (name, meetingCode) => {
+        try {
+            let request = await client.post("/guest", {
+                name: name,
+                meetingCode: meetingcode
             })
-        }catch(error){
+        } catch (error) {
             throw error
         }
     }
 
-const data = {
-    handleLogin,handleRegister, userData, setUserData,
-}
+    const data = {
+        handleLogin, handleRegister, userData, setUserData,
+    }
 
 
     return (

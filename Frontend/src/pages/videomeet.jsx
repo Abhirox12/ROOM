@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState  } from 'react'
-import { useNavigate } from 'react-router-dom'
 import io from "socket.io-client"
 import styles from "../Css files/videomeet.module.css"
 import VideocamIcon from '@mui/icons-material/Videocam';
@@ -26,7 +25,6 @@ export default function VideoMeet() {
   const socketIdRef = useRef()
   const localVideoRef = useRef()
   const roomIdRef = useRef()
- let routeTo = useNavigate()
   const [videoAvailable, setVideoAvailable] = useState(true)
   const [audioAvailable, setAudioAvailable] = useState(true)
   const [screenAvailable, setScreenAvailable] = useState(false)
@@ -256,7 +254,6 @@ export default function VideoMeet() {
       roomIdRef.current = window.location.href
       socketIdRef.current = socketRef.current.id
 
-      // ✅ FIX 6: chat listener was commented out — restored
       socketRef.current.on('chat-message', addMessage)
 
       socketRef.current.on('user-left', (id) => {

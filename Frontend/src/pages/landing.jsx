@@ -54,7 +54,7 @@ let hide=()=>{
       <div className="landingstyle" style={{display:isblur()}}>
       </div>
 
-      <Guestmeeting style={gueststyle} switchlogin={switchguestlogin} display={hide}/>
+      <Guestmeeting style={gueststyle} switchButton={switchguestlogin} display={hide}/>
       <Login style={loginstyle} switchguest={switchguestlogin} displayer={hide} />
       <div className="landingPageContainer">
         <div className="landingPageText">

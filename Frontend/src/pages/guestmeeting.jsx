@@ -1,13 +1,15 @@
 import React from 'react'
 
-export default function Guestmeeting({ style, switchlogin,display }) {
+export default function Guestmeeting({ style, switchButton, display, token, create }) {
 
 
 
   return (
     <div className='guest' style={style}>
       <div className="cross" onClick={display}>x</div>
-      <h1 style={{color:"purple"}}>Join Room</h1>
+      <h1 style={{ color: "purple" }}>
+        {create ? "Create Room" : "Join Room"}
+      </h1>
       <div className="guestform">
         <form action="">
           {/* <label htmlFor="name">Name</label> <br />
@@ -15,9 +17,23 @@ export default function Guestmeeting({ style, switchlogin,display }) {
           <label htmlFor="meetingCode">Meeting Code</label> <br />
           <input type="text" id='meetingCode' name='meetingCode' />
           <br />
-          <button className='join'>Join Room</button>
+
+          {create ?
+            <button className='join'>
+              Create Room
+            </button>
+              :
+              <button className='join'>
+
+              Join Room
+            </button>
+          }
         </form>
-        <button className='switch-to-login' onClick={switchlogin}>Login/Signup</button>
+        <button className='switch-to-login' onClick={switchButton}>
+          {token ? create ? "Join Room" : "Create Room" : "Login/Signup"}
+
+
+        </button>
       </div>
     </div>
   )

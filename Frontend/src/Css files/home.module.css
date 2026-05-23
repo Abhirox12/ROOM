@@ -1,0 +1,102 @@
+.homepage {
+    background: hsla(276, 100%, 25%, 1.0);
+    width: 100vw;
+    height: 100vh;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+
+}
+.nav{
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    /* background-color:  */
+    color: aliceblue;
+    padding: 1rem 2.2rem;
+}
+.nav ul{
+    display: flex;
+    gap: 2rem;
+
+}
+.nav ul li{
+    list-style-type: none;
+    padding: 0.3rem 0.6rem;
+    
+}
+.nav ul li:hover{
+    /* border: 2px solid aliceblue; */
+    background-color: white;
+    color:  hsla(276, 100%, 25%, 1.0);
+    border-radius: 3px;
+    cursor: pointer;
+    opacity: 0.7    ;
+
+}
+
+
+
+.mainbox{
+    width: 100%;
+    height: 80vh;
+    /* background-color: rgb(1, 20, 37); */
+    display: flex;
+}
+
+.left,.right{
+    margin: auto;
+    width: 45%;
+    height:100% ;
+    /* background-color: black; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+.left h1{
+    width: 100%;
+    font-size: 2.5rem;
+    color: aliceblue;
+    text-align: center;
+}
+.buttonbox{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    box-sizing: border-box;
+}
+.buttonbox button{
+font-size: 1.5rem;
+border-radius: 8px;
+padding: 0.75rem 2rem;
+border: 1px solid white;
+background: transparent;
+color: white;
+box-shadow: inset 1px 1px 5px 0px white;
+
+font-weight: 600;
+}
+
+
+.buttonbox button:hover{
+    background: rgba(255, 255, 255, 0.096);
+    color: rgb(53, 0, 53);;
+border: 1px solid rgb(53, 0, 53);
+box-sizing: border-box;
+border-radius: 8px;
+font-weight: 600;
+padding: 0.75rem 2rem;
+}
+.vcimage {
+  width: 80%;
+  margin: 1rem auto;
+  border: 2px solid hsla(276, 100%, 25%, 1.0);
+  border-radius: 18px;
+
+  box-shadow: 3px 4px 13px;
+}

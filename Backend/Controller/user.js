@@ -2,6 +2,7 @@ import { User } from "../Model/user.js"
 import httpStatus from "http-status";
 import bcrypt, { hash } from "bcrypt";
 import crypto from "crypto";
+import jwt from 'jsonwebtoken';
 
 
 
@@ -44,7 +45,15 @@ const login = async (req, res) => {
         }
 
         if (bcrypt.compare(password, checkUser.password)) {
-            let token = crypto.randomBytes(20).toString("hex")
+            let token = jwt.sign(
+                {
+                    userId: checkUser._id,
+                    username: checkUser.username,
+                    name:checkUser.name
+                },
+                process.env.JWT_SECRET,   // add this in .env file
+                { expiresIn: '7d' }
+            )
             checkUser.token = token;
             await checkUser.save();
             return res.status(httpStatus.OK).json({ token: token, message: "login done" })

@@ -23,7 +23,7 @@ export default function login({ style, switchguest, displayer }) {
     try {
       if (display === true) {
         let result = await handleLogin(username, password)
-        console.log(result)
+        // console.log(result)
     
       }
       if (display === false) {
