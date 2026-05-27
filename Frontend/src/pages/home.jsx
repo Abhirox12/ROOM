@@ -1,19 +1,27 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import withAuth from '../../utilities/authguard'
 import styles from "../Css files/home.module.css"
 import { jwtDecode } from "jwt-decode"
 import JoinMeeting from './guestmeeting'
+import CreateMeeting from './createbox'
+import { v4 as uuidv4 } from 'uuid'
+
 
 
 
 function Home() {
     let [create, setCreate] = useState(false)
-    let [box, setBox] = useState(false)
+    let [join, setJoin] = useState(false)
     let [image, setImage] = useState(true)
+    // let [createMeeting] = useContext(AuthContext)
 
     const token = localStorage.getItem('token')
     const decoded = jwtDecode(token)
 
+const createMeetingCode = () => {
+  const meetingCode = uuidv4().slice(0, 8)
+  return meetingCode;
+}
 
     let logout = () => {
         localStorage.removeItem('token')
@@ -21,7 +29,7 @@ function Home() {
     }
 
     const joinstyle = {
-        display: box ? "flex" : "none"
+        display: join ? "flex" : "none"
     }
 
     const gueststyle = {
@@ -30,44 +38,45 @@ function Home() {
 
     let switchjoincreate = () => {
         // setCreate(!create);
-        setBox(!box)
+        setJoin(!join)
 
     }
 
 
-    let switchButton = ()=>{
+    let switchButton = () => {
         setCreate(!create)
     }
     let joinShow = () => {
-        if (image === false && box === true && create === true) {
+        if (image === false && join === true && create === true) {
             setImage(false)
-            setBox(true)
+            setJoin(true)
             setCreate(false)
             console.log("j1")
-        } else if (image === true && box === false) {
+        } else if (image === true && join === false) {
             setImage(false)
-            setBox(true)
+            setJoin(true)
             setCreate(false)
             console.log("j2")
-        } else if (image === false && box === true & create === false) {
-            setBox(false)
+        } else if (image === false && join === true & create === false) {
+            setJoin(false)
             setImage(true)
             console.log("j3")
         }
-        
-        
+
+
     }
     let createShow = () => {
-        if (image === false && box === true && create === true) {
-            setBox(false)
+        if (image === false && join === true && create === true) {
+            setJoin(false)
             setImage(true)
             console.log("c1")
-        } else if (image === true && box === false) {
+        } else if (image === true && join === false) {
             setImage(false)
-            setBox(true)
+            setJoin(true)
             setCreate(true)
+            createMeetingCode()
             console.log("c2")
-        } else if (image === false && box === true & create === false) {
+        } else if (image === false && join === true & create === false) {
             setCreate(true)
             console.log("c3")
         }
@@ -75,7 +84,7 @@ function Home() {
 
     let hide = () => {
         setCreate(false);
-        setBox(false);
+        setJoin(false);
         setImage(true)
     }
 
@@ -107,7 +116,12 @@ function Home() {
                     {image ?
                         <img src="../vcimage.png" alt="vciamge" className={styles.vcimage} />
                         :
-                        <JoinMeeting style={joinstyle} create={create} switch={switchjoincreate} switchButton={switchButton} token={token} display={hide} />
+
+                        create ?
+                            <CreateMeeting meetingCode={createMeetingCode()} style={styles.createbox} />
+                            :
+                            <JoinMeeting style={joinstyle} create={create} switch={switchjoincreate} switchButton={switchButton} token={token} display={hide} />
+
                     }
                 </div>
             </div>

@@ -3,6 +3,8 @@ import httpStatus from "http-status";
 import bcrypt, { hash } from "bcrypt";
 import crypto from "crypto";
 import jwt from 'jsonwebtoken';
+import { Meeting } from "../Model/meeting.js";
+import { Guest } from "../Model/guest.js";
 
 
 
@@ -49,7 +51,7 @@ const login = async (req, res) => {
                 {
                     userId: checkUser._id,
                     username: checkUser.username,
-                    name:checkUser.name
+                    name: checkUser.name
                 },
                 process.env.JWT_SECRET,   // add this in .env file
                 { expiresIn: '7d' }
@@ -60,24 +62,80 @@ const login = async (req, res) => {
         }
     } catch (err) {
         return res.status(500).json({ message: `Something went wrong ${err}` })
+        console.log(err)
     }
 }
 
 const guestUserMeeting = async (req, res) => {
-    let { name, meetingCode } = req.body;
-    if (!name || !meetingCode) {
+    // console.log(req.params)
+    let {  meetingCode } = req.params;
+    console.log(meetingCode)
+    if (!meetingCode) {
+        console.log("code not found")
         return res.status(400).json({ message: "please provide your credentials" })
     }
     try {
-        let verifyCode = await meeting.find({ meetingCode })
-        if (!verifyCode) {
+        console.log('2')
+        let meeting = await Meeting.findOne({ meetingCode:meetingCode })
+        console.log(meeting)
+        if (!meeting) {
             return res.status(httpStatus.NOT_FOUND).json({ message: "meeting not found" })
         }
-        res.send("joining meeting")
+        let guest1 = await Guest({ meetingCode })
+        await guest1.save()
+        meeting.joiner.push(guest1)
+        await meeting.save()
+        
+        res.redirect("joining meeting")
     } catch (err) {
         return res.status(500).json({ message: `Something went wrong ${err}` })
 
     }
 }
+const createMeeting = async (req, res) => {
+    let { meetingCode, guest, Hostname } = req.body;
+    console.log(meetingCode)
 
-export { register, login, guestUserMeeting } 
+
+    let meeting = await Meeting.find({ meetingCode })
+    console.log(meeting)
+    if (meeting.length >> 0) {
+        console.log("meeting")
+        return res.status(409).json({ message: "meeting already exists" })
+        console.log("meeting")
+
+
+    }
+    try {
+        const meeting1 = new Meeting({ Hostname, meetingCode })
+
+        let saved = await meeting1.save()
+        console.log('1')
+        console.log(saved)
+        // let Guest = await Guest.findById({id})
+        // meeting1.push(Guest)
+
+        res.status(200).json({ message: "meeting created" })
+
+    } catch (err) {
+        return res.status(500).json({ message: `Something went wrong ${err}` })
+
+    }
+}
+const joinMeeting = async (req, res) => {
+
+}
+
+const checkMeeting = async (req, res) => {
+
+    let { meetingCode } = req.params;
+    console.log("yes check"+ meetingCode)
+    let CheckCode = await Meeting.findOne({ meetingCode: meetingCode })
+    console.log(`yes ${CheckCode}`)
+    if (CheckCode) {
+        return res.status(200).json({ valid: true })
+    }
+    return res.status(404).json({ valid: false })
+}
+
+export { register, login, guestUserMeeting, createMeeting, checkMeeting,joinMeeting } 

@@ -21,6 +21,10 @@ const userSchema = new Schema({
     },
     token: {
         type: String
+    },
+    meeting: {
+        type: Schema.Types.ObjectId,
+        ref: "Meeting"
     }
 
 })

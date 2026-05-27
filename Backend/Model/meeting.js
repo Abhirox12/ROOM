@@ -1,4 +1,5 @@
-import { Schema } from "mongoose";
+import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
 const meetingSchema = new Schema({
     Hostname: {
@@ -6,8 +7,8 @@ const meetingSchema = new Schema({
         required: true
     },
     joiner:{
-        type:String,
-        // required:true
+        type:Schema.Types.ObjectId,
+        ref:"Guest"
     },
     meetingCode: {
         type: String,
@@ -18,3 +19,7 @@ const meetingSchema = new Schema({
         default: Date.now()
     }
 })
+
+const Meeting = mongoose.model("Meeting", meetingSchema);
+
+export {Meeting}

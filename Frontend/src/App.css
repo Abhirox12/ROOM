@@ -87,7 +87,7 @@ color: whitesmoke;
   position: absolute;
   display: none;
   flex-direction: column;
-  background-image: url("https://us.123rf.com/450wm/photomafia/photomafia1809/photomafia180900142/109327382-purple-cloudy-rectangular-watercolor-gradient-background-beautiful-abstract-canvas-for.jpg?ver=6");
+  background-image: url(./image.png);
   background-size: cover;
 
   position: absolute;
@@ -97,7 +97,7 @@ color: whitesmoke;
 .guest {
   padding: 1rem;
   background-color: rgba(196, 8, 8, 0);
-  background-image: url("https://us.123rf.com/450wm/photomafia/photomafia1809/photomafia180900142/109327382-purple-cloudy-rectangular-watercolor-gradient-background-beautiful-abstract-canvas-for.jpg?ver=6");
+  background-image: url(./image.png);
   opacity: 1;
   background-size: cover;
   width: 30%;
@@ -154,7 +154,8 @@ color: whitesmoke;
 
 .switch-to-login,
 .Switch-to-signup-btn,
-.switch-to-guest {
+.switch-to-guest,
+.switch-to-join {
   font-size: 1rem;
   padding: 0.4rem 0.8rem;
   border-radius: 5px;
@@ -167,12 +168,13 @@ color: whitesmoke;
 
 .switch-to-login:hover,
 .Switch-to-signup-btn:hover,
-.switch-to-guest:hover {
+.switch-to-guest:hover,
+.switch-to-join:hover {
   background: rgb(79 5 130);
   color: white;
 }
 
-.join,.login-btn,.forget-password,.signup-btn {
+.join,.login-btn,.forget-password,.signup-btn,.creating-room {
   color: white;
   background: rgb(79 5 130);
   border: 2px solid white;
@@ -187,7 +189,8 @@ color: whitesmoke;
 .join:hover,
 .login-btn:hover,
 .forget-password:hover,
-.signup-btn:hover
+.signup-btn:hover,
+.creating-room:hover
  {
   background: rgba(191, 4, 229, 0.164);
   color: rgb(79 5 130);

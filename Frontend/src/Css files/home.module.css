@@ -2,101 +2,142 @@
     background: hsla(276, 100%, 25%, 1.0);
     width: 100vw;
     height: 100vh;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
-
 }
-.nav{
+
+.nav {
     font-size: 1.1rem;
     display: flex;
     justify-content: space-between;
     width: 100%;
-    /* background-color:  */
     color: aliceblue;
     padding: 1rem 2.2rem;
 }
-.nav ul{
+
+.nav ul {
     display: flex;
     gap: 2rem;
 
 }
-.nav ul li{
+
+.nav ul li {
     list-style-type: none;
     padding: 0.3rem 0.6rem;
-    
+
 }
-.nav ul li:hover{
-    /* border: 2px solid aliceblue; */
+
+.nav ul li:hover {
     background-color: white;
-    color:  hsla(276, 100%, 25%, 1.0);
+    color: hsla(276, 100%, 25%, 1.0);
     border-radius: 3px;
     cursor: pointer;
-    opacity: 0.7    ;
+    opacity: 0.7;
 
 }
 
 
 
-.mainbox{
+.mainbox {
     width: 100%;
     height: 80vh;
-    /* background-color: rgb(1, 20, 37); */
     display: flex;
 }
 
-.left,.right{
+.left,
+.right {
     margin: auto;
     width: 45%;
-    height:100% ;
-    /* background-color: black; */
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     gap: 2rem;
 }
-.left h1{
+
+.left h1 {
     width: 100%;
     font-size: 2.5rem;
     color: aliceblue;
     text-align: center;
 }
-.buttonbox{
+
+.buttonbox {
     width: 100%;
     display: flex;
     justify-content: center;
     gap: 1.5rem;
     box-sizing: border-box;
 }
-.buttonbox button{
-font-size: 1.5rem;
-border-radius: 8px;
-padding: 0.75rem 2rem;
-border: 1px solid white;
-background: transparent;
-color: white;
-box-shadow: inset 1px 1px 5px 0px white;
 
-font-weight: 600;
+.buttonbox button {
+    font-size: 1.5rem;
+    border-radius: 8px;
+    padding: 0.75rem 2rem;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    box-shadow: inset 1px 1px 5px 0px white;
+
+    font-weight: 600;
 }
 
 
-.buttonbox button:hover{
+.buttonbox button:hover {
     background: rgba(255, 255, 255, 0.096);
-    color: rgb(53, 0, 53);;
-border: 1px solid rgb(53, 0, 53);
-box-sizing: border-box;
-border-radius: 8px;
-font-weight: 600;
-padding: 0.75rem 2rem;
+    color: rgb(53, 0, 53);
+    ;
+    border: 1px solid rgb(53, 0, 53);
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
 }
-.vcimage {
-  width: 80%;
-  margin: 1rem auto;
-  border: 2px solid hsla(276, 100%, 25%, 1.0);
-  border-radius: 18px;
 
-  box-shadow: 3px 4px 13px;
+.vcimage {
+    width: 80%;
+    margin: 1rem auto;
+    border: 2px solid hsla(276, 100%, 25%, 1.0);
+    border-radius: 18px;
+
+    box-shadow: 3px 4px 13px;
+}
+
+.createbox {
+
+    background-color: rgba(196, 8, 8, 0);
+    background-image: url(./image.png);
+    opacity: 1;
+    background-size: cover;
+    width: 30%;
+    aspect-ratio: 3/2;
+    color: aliceblue;
+    position: absolute;
+    border-radius: 10px;
+    flex-direction: column;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.151);
+
+}
+
+.createbox div h1 {
+    text-align: center;
+    color: purple;
+}
+.createbox>div{
+        padding: 1rem;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.151);
+}
+
+.createbox div div {
+    width: 80%;
+    margin: 1rem auto;
+    font-size: 1.25rem;
+}
+
+.createbox div p {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.8rem;
+    padding: .5rem 0;
 }

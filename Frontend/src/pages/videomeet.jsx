@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState  } from 'react'
+import React, { useEffect, useRef, useState, useContext } from 'react'
 import io from "socket.io-client"
 import styles from "../Css files/videomeet.module.css"
 import VideocamIcon from '@mui/icons-material/Videocam';
@@ -11,6 +11,9 @@ import StopScreenShareIcon from '@mui/icons-material/StopScreenShare'
 import ChatIcon from '@mui/icons-material/Chat'
 import { Badge, colors, IconButton, Modal, TextField } from '@mui/material';
 import { Button } from '@mui/material';
+import { AuthContext } from '../../context/authcontext'
+import { useParams, useSearchParams } from 'react-router-dom'
+import { jwtDecode } from "jwt-decode"
 
 let server_url = "http://localhost:3000/"
 var connections = {}
@@ -37,18 +40,31 @@ export default function VideoMeet() {
   const [newMessage, setNewMessage] = useState(0)
   const [askForUsername, setAskForUsername] = useState(true)
   const [username, setUsername] = useState("")
+  const [tokenValue, setTokenValue] = useState(true)
+  const token = localStorage.getItem('token')
 
   const videoRef = useRef([])
   const [videos, setVideos] = useState([])
-
+  const { handleCreateMeeting } = useContext(AuthContext)
+  const { meetingCode } = useParams()
+  const [searchParams]= useSearchParams()
+  const isCreating = searchParams.get('type')=== 'create';
   useEffect(() => {
-      const roomId = window.location.pathname.split('/')[1]
+    const roomId = window.location.pathname.split('/')[1]
 
-    if (roomId){
+    if (roomId) {
 
       getPermissions()
     }
   }, [])
+
+  useEffect(() => {
+    // console.log(token)
+    if (token === null) {
+      setTokenValue(false);
+    }
+  }, [token])
+
 
   useEffect(() => {
     if (video !== undefined && audio !== undefined && socketRef.current) {
@@ -406,9 +422,9 @@ export default function VideoMeet() {
     setNewMessage(0)  // ← reset badge count when opening
 
   }
-  const handleCallEnd = ()=>{
+  const handleCallEnd = () => {
     window.location.href = "/"
-    if(window.location.href === "/"){
+    if (window.location.href === "/") {
 
       try {
         let tracks = localVideoRef.current.srcObject.getTracks();
@@ -416,8 +432,8 @@ export default function VideoMeet() {
         setAudioAvailable(false)
         setVideoAvailable(false)
       } catch (error) {
-     console.log(error)
-      }  
+        console.log(error)
+      }
     }
 
   }
@@ -436,9 +452,19 @@ export default function VideoMeet() {
 
   // ─── Connect handler ───────────────────────────────────────────────────────
 
-  const connect = () => {
+  const connect = async () => {
     setAskForUsername(false)
     getMedia()
+    if (token) {
+      console.log(token)
+      const decoded = jwtDecode(token)
+      setUsername(decoded.name) 
+
+      if (isCreating) {
+        await handleCreateMeeting(meetingCode)
+      }
+      
+    }
   }
 
 
@@ -447,18 +473,25 @@ export default function VideoMeet() {
   return (
     <div>
       {askForUsername ? (
-        <div>
-          <h1>Enter Lobby</h1>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-          />
-          <button onClick={connect}>Enter</button>
-          <br />
-          <video ref={localVideoRef} autoPlay muted style={{ width: 300 }} />
-        </div>
+        tokenValue ?
+          <div>
+            <video ref={localVideoRef} autoPlay muted style={{ width: 300 }} />
+            <br />
+            <button onClick={connect}>Enter</button>
+          </div>
+          :
+          <div>
+            <h1>Enter Lobby</h1>
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+            />
+            <button onClick={connect}>Enter</button>
+            <br />
+            <video ref={localVideoRef} autoPlay muted style={{ width: 300 }} />
+          </div>
       ) : (
         <div className={styles.conferenceContainer}>
           <video ref={localVideoRef} className={styles.userVideo} autoPlay muted />
