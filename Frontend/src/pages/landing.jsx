@@ -51,6 +51,7 @@ let hide=()=>{
   return (
 
     <div className='landingPage'>
+      <img src="../images/Logo.png" alt="" className='Logo' />
       <div className="landingstyle" style={{display:isblur()}}>
       </div>
 
@@ -60,10 +61,10 @@ let hide=()=>{
         <div className="landingPageText">
           {/* <h1>Welcome to Room</h1> */}
           <h1>Connect to Anyone, Anywhere</h1>
-          <p>Chat with people across the world just like you are in same ROOM</p>
+          <p>Chat with people across the world just like you are in same <img src="../images/Room.png" alt="ROOM" width="80px" className='room-text'/></p>
         </div>
         <Buttonsbox guest={guestshow} login={loginshow} />
-        <img src="../vcimage.png" alt="" className='vcimage' />
+        <img src="../images/vcimage.png" alt="" className='vcimage' />
       </div>
     </div>
   )

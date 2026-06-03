@@ -1,11 +1,11 @@
 .homepage {
     background: hsla(276, 100%, 25%, 1.0);
     width: 100vw;
-    height: 100vh;
+    min-height: 100dvh;
 }
 
 .nav {
-    font-size: 1.1rem;
+    font-size: clamp(1.1rem, 1.3vw, 3rem);
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -15,13 +15,16 @@
 
 .nav ul {
     display: flex;
-    gap: 2rem;
+    gap: clamp(0.5rem, 2vw, 2rem);
 
 }
 
 .nav ul li {
     list-style-type: none;
     padding: 0.3rem 0.6rem;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
 
 }
 
@@ -56,45 +59,51 @@
 
 .left h1 {
     width: 100%;
-    font-size: 2.5rem;
+    font-size: clamp(1.4rem, 4vw, 3rem);
     color: aliceblue;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .buttonbox {
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 1.5rem;
+    gap: clamp(0.75rem, 2vw, 2.5rem);
     box-sizing: border-box;
 }
 
 .buttonbox button {
-    font-size: 1.5rem;
+    white-space: nowrap;
+    font-size: clamp(1.2rem, 2vw, 3rem);
     border-radius: 8px;
-    padding: 0.75rem 2rem;
+    padding: clamp(0.4rem, 1.1vw, 1rem) clamp(0.4rem, 2.5vw, 2.5rem);
+
     border: 1px solid white;
     background: transparent;
     color: white;
     box-shadow: inset 1px 1px 5px 0px white;
+    box-sizing: border-box;
 
     font-weight: 600;
 }
 
 
 .buttonbox button:hover {
+    box-sizing: border-box;
     background: rgba(255, 255, 255, 0.096);
     color: rgb(53, 0, 53);
     ;
     border: 1px solid rgb(53, 0, 53);
-    box-sizing: border-box;
     border-radius: 8px;
     font-weight: 600;
-    padding: 0.75rem 2rem;
+    padding: clamp(0.5rem, 1.1vw, 1rem) clamp(0.8rem, 2.5vw, 2.5rem);
 }
 
 .vcimage {
-    width: 80%;
+    width: clamp(270px, 60%, 500px);
     margin: 1rem auto;
     border: 2px solid hsla(276, 100%, 25%, 1.0);
     border-radius: 18px;
@@ -103,13 +112,12 @@
 }
 
 .createbox {
-
+    z-index: 2;
     background-color: rgba(196, 8, 8, 0);
-    background-image: url(./image.png);
+    background-image: url(./images/image.png);
     opacity: 1;
     background-size: cover;
-    width: 30%;
-    aspect-ratio: 3/2;
+    width: clamp(300px, 30%, 40vw);
     color: aliceblue;
     position: absolute;
     border-radius: 10px;
@@ -122,15 +130,32 @@
 .createbox div h1 {
     text-align: center;
     color: purple;
+    font-size: clamp(1.7rem, 3vw, 3rem);
 }
-.createbox>div{
-        padding: 1rem;
+
+.createbox div span {
+    text-align: right;
     width: 100%;
+    color: white;
+    display: block;
+    padding-right: 3px;
+    margin-top: 1px;
+    font-size: clamp(1.5rem, 2.5vw, 3rem);
+    cursor: default;
+    border-radius: 10px;
+    line-height: 1.1rem;
+
+}
+
+.createbox>div {
+    /* padding: 1rem; */
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.151);
 }
 
 .createbox div div {
-    width: 80%;
+    width: 90%;
     margin: 1rem auto;
     font-size: 1.25rem;
 }
@@ -138,6 +163,160 @@
 .createbox div p {
     text-align: center;
     font-weight: 600;
-    font-size: 1.8rem;
+    font-size: clamp(1.5rem, 1.5vw, 2.5rem);
     padding: .5rem 0;
+}
+
+.Logo {
+    padding: 0rem;
+    margin-right: auto;
+    width: clamp(130px, 11vw, 200px);
+    height: auto;
+    display: inline;
+}
+
+.bottombar {
+    display: none;
+}
+
+.nav ul .Logout {
+    margin: auto;
+    border-radius: 5px;
+    background-color: #5f026d;
+    border: 1px solid rgba(255, 255, 255, 0.555);
+}
+
+
+@media(max-width:786px) {
+    .homestyle {
+        display: none;
+        backdrop-Filter: blur(5px);
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        z-index: 1;
+    }
+
+    .left,
+    .right {
+        width: 90%;
+        height: 50%;
+        box-sizing: border-box;
+        margin: 0 auto;
+    }
+
+    .left h1 {
+        flex-direction: row;
+    }
+
+    .mainbox {
+        margin-top: 1.5rem;
+        height: auto;
+        box-sizing: border-box;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+
+}
+
+@media (max-width:576px) {
+
+
+
+    .vcimage {
+        margin: 0rem 1rem;
+
+    }
+
+    .buttonbox {
+        gap: 1.2rem;
+        width: 75%;
+        flex-direction: column;
+    }
+
+    .buttonbox button {
+        padding: 1rem 0;
+    }
+
+    .buttonbox button:hover {
+        padding: 1rem 0;
+    }
+
+    .left h1 {
+        flex-direction: column;
+    }
+
+
+}
+
+@media(max-width:432px) {
+    .navleft {
+        flex-direction: column;
+    }
+
+    .navright {
+        flex-direction: column-reverse;
+    }
+
+    .homepage {
+        overflow: hidden;
+    }
+
+    .bottombar {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        font-size: clamp(1rem, 1.3vw, 3rem);
+        padding: 0.7rem 1.2rem;
+        color: whitesmoke;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(100, 3, 104, 0.822);
+    }
+
+    .bottombar ul {
+        justify-content: space-around;
+        width: 100%;
+        display: flex;
+    }
+
+    .bottombar ul li {
+        text-align: center;
+        width: 30%;
+        list-style-type: none;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .bottombar ul li:hover {
+        background-color: white;
+        color: hsla(276, 100%, 25%, 1.0);
+        border-radius: 8px;
+        cursor: pointer;
+        opacity: 0.7;
+    }
+
+    .nav ul .Hometab,
+    .nav ul .HistoryTab {
+
+        display: none;
+    }
+
+    .nav ul {
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav ul .Logout {
+        font-size: 0.9rem;
+        padding: 0.3rem 0.6rem;
+    }
+
+    .Logo {
+        width: 40vw;
+    }
 }

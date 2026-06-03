@@ -7,6 +7,7 @@ import Home from './pages/home'
 import { useParams } from 'react-router-dom'
 import { Routes, BrowserRouter as Router, Route } from "react-router-dom"
 import './App.css'
+import VideoMeet from './pages/videomeet'
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
         <AuthProvider >
           <Routes>
             <Route path='/' element={<Protectlogin />} />
-            <Route path='/:meetingCode' element={<ProtectedMeeting />} />
+            <Route path='/:meetingCode' element={<VideoMeet />} />
             <Route path='/home' element={<Home />} />
           </Routes>
         </AuthProvider>

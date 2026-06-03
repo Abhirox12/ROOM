@@ -9,7 +9,8 @@ import { jwtDecode } from "jwt-decode"
 export const AuthContext = createContext({})
 
 const client = axios.create({
-    baseURL: "http://localhost:3000/"
+    
+    baseURL: "https://192.168.1.4:3000/"
 }
 )
 

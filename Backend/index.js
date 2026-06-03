@@ -3,8 +3,10 @@ dotenv.config()
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
-import { createServer } from "node:http";
+import { createServer } from "node:https";
 import { connectToSocket } from "./Controller/socket.js";
+import fs from "fs"
+
 import { fileURLToPath } from "url";
 import userRouter from "./routes/userRoutes.js";
 import cors from "cors";
@@ -16,7 +18,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const httpServer = createServer(app);
+const httpServer = createServer({
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+},app)
 const io = connectToSocket(httpServer)
 
 app.use(cors())

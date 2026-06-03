@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import withAuth from '../../utilities/authguard'
+// import withAuth from '../../utilities/authguard'
 import styles from "../Css files/home.module.css"
 import { jwtDecode } from "jwt-decode"
 import JoinMeeting from './guestmeeting'
@@ -13,15 +13,14 @@ function Home() {
     let [create, setCreate] = useState(false)
     let [join, setJoin] = useState(false)
     let [image, setImage] = useState(true)
-    // let [createMeeting] = useContext(AuthContext)
 
     const token = localStorage.getItem('token')
-    const decoded = jwtDecode(token)
+    // const decoded = jwtDecode(token)
 
-const createMeetingCode = () => {
-  const meetingCode = uuidv4().slice(0, 8)
-  return meetingCode;
-}
+    const createMeetingCode = () => {
+        const meetingCode = uuidv4().slice(0, 8)
+        return meetingCode;
+    }
 
     let logout = () => {
         localStorage.removeItem('token')
@@ -37,10 +36,13 @@ const createMeetingCode = () => {
     }
 
     let switchjoincreate = () => {
-        // setCreate(!create);
         setJoin(!join)
-
     }
+    const isblur = () => {
+    if (create === true || join === true) {
+      return "block"
+    }
+  }
 
 
     let switchButton = () => {
@@ -92,19 +94,20 @@ const createMeetingCode = () => {
 
     return (
         <div className={styles.homepage}>
+            <div className={styles.homestyle} style={{display:isblur()}}></div>
             <nav className={styles.nav}>
-                <ul>
-                    <li>Room</li>
-                    <li>Home</li>
+                <ul className={styles.navleft}>
+                    <img src="./images/LogoHome.png" className={styles.Logo} alt="" />
+                    <li className={styles.Hometab}>Home</li>
                 </ul>
-                <ul>
-                    <li>History</li>
-                    <li onClick={logout}>Logout</li>
+                <ul className={styles.navright}>
+                    <li className={styles.HistoryTab}>History</li>
+                    <li onClick={logout} className={styles.Logout}>Logout</li>
                 </ul>
             </nav>
             <div className={styles.mainbox}>
                 <div className={styles.left}>
-                    <h1>Hi, {decoded.name} !<br />Ready to Connect?</h1>
+                    <h1><span>Hi, Abhimanyu!&nbsp;</span> <span> Ready to Connect?</span></h1>
                     <div className={styles.buttonbox}>
 
                         <button className={styles.room} onClick={createShow}>Create Room</button>
@@ -114,19 +117,33 @@ const createMeetingCode = () => {
                 </div>
                 <div className={styles.right}>
                     {image ?
-                        <img src="../vcimage.png" alt="vciamge" className={styles.vcimage} />
+                        <img src="../images/vcimage.png" alt="vciamge" className={styles.vcimage} />
                         :
 
                         create ?
-                            <CreateMeeting meetingCode={createMeetingCode()} style={styles.createbox} />
+                            <CreateMeeting meetingCode={createMeetingCode()} switchButton={switchButton} display={hide} style={styles.createbox} />
                             :
                             <JoinMeeting style={joinstyle} create={create} switch={switchjoincreate} switchButton={switchButton} token={token} display={hide} />
 
                     }
                 </div>
             </div>
+
+            <div className={styles.bottombar}>
+                <ul>
+                    <li>
+                        <span><i className="fa-regular fa-house"></i></span>
+                        <p>Home</p>
+                    </li>
+                    <li><span><i className="fa-solid fa-clock-rotate-left"></i></span>
+                    <p>History</p>
+                    </li>
+
+                    
+                </ul>
+            </div>
         </div>
     )
 }
 
-export default withAuth(Home)
+export default Home
