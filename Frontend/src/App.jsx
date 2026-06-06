@@ -17,8 +17,8 @@ function App() {
         <AuthProvider >
           <Routes>
             <Route path='/' element={<Protectlogin />} />
-            <Route path='/:meetingCode' element={<VideoMeet />} />
-            <Route path='/home' element={<Home />} />
+            <Route path='/:meetingCode' element={<ProtectedMeeting />} />
+            <Route path='/home' element={<Protectlogin />} />
           </Routes>
         </AuthProvider>
       </Router>

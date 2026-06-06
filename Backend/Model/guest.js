@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const guestSchema = new Schema({
     username: {
         type: String,
-        required: true
+        // required: true
     },
     meetingCode: {
         type: String,

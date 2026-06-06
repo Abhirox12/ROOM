@@ -3,14 +3,14 @@ import httpStatus from "http-status";
 import { useContext, createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"
-// import { Meeting } from "../../Backend/Model/meeting";
+
 
 
 export const AuthContext = createContext({})
 
 const client = axios.create({
-    
-    baseURL: "https://192.168.1.4:3000/"
+
+    baseURL: "https://192.168.1.5:3000/"
 }
 )
 
@@ -32,11 +32,14 @@ export const AuthProvider = ({ children }) => {
                 email: email,
                 password: password
             })
+
             if (request.status === httpStatus.CREATED) {
                 return request.data.message;
             }
         } catch (error) {
-            throw error
+            if (error.response?.status === httpStatus.CONFLICT || error.response?.status === 400) {
+                return error.response.data.message
+            }
         }
     }
     const handleLogin = async (username, password) => {
@@ -46,17 +49,14 @@ export const AuthProvider = ({ children }) => {
                 password: password
             })
 
-            console.log(username, password)
-            console.log(request)
-            console.log(request.data) // ← check this
-
-
             if (request.status === httpStatus.OK) {
                 localStorage.setItem('token', request.data.token);
                 router("/home")
             }
         } catch (error) {
-            throw error
+            if(error.response?.status === 400 || error.response?.status === httpStatus.NOT_FOUND || error.response?.status === 401){
+                return error.response.data.message
+            }
         }
     }
     const join = async (name, meetingCode) => {
@@ -72,24 +72,18 @@ export const AuthProvider = ({ children }) => {
     }
 
     const handleCreateMeeting = async (meetingCode, Hostname) => {
-        console.log("received in context:", meetingCode) 
 
         const token = localStorage.getItem('token')
         if (token) {
             const decoded = jwtDecode(token)
             Hostname = decoded.name
-            console.log("creating meeting")
-            console.log("sending:", meetingCode)
 
             try {
-                console.log("sending:", meetingCode)
-
                 let request = await client.post(`/create/${meetingCode}`, {
                     meetingCode: meetingCode,
                     Hostname: decoded.name,
                     joiner: []
                 })
-                console.log("1")
             }
             catch (error) {
                 throw error
@@ -99,14 +93,11 @@ export const AuthProvider = ({ children }) => {
 
     const checkMeeting = async (meetingCode) => {
         try {
-            console.log(meetingCode)
-            console.log(":")
             let request = await client.get(`/check/${meetingCode}`, {
                 meetingCode: meetingCode,
             })
-            console.log("request")
             if (request.status === 200) {
-                
+
                 return true
             }
             return false
@@ -117,21 +108,21 @@ export const AuthProvider = ({ children }) => {
 
 
     const guestUserMeeting = async (meetingCode) => {
-        console.log(meetingCode)
-        try {
-            let request = await client.post(`/guestjoin/${meetingCode}`, {
-                meetingCode: meetingCode,
-            })
-            console.log(request)
-            if (request.status === 200) {
-                console.log("true")
-                return true
+        if(meetingCode){
+
+            try {
+                let request = await client.post(`/guestjoin/${meetingCode}`, {
+                    meetingCode: meetingCode,
+                })
+                if (request.status === 200) {
+                    return true
+                }
+                
+            } catch(error) {
+                if(error.response?.status === 400 || error.response?.status === httpStatus.NOT_FOUND ){
+                    return error.response.data.message  
+                }
             }
-            console.log("false")
-            return false
-        } catch {
-            console.log("catch false")
-            return false
         }
     }
 

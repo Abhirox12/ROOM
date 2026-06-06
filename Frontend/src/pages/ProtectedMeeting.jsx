@@ -1,39 +1,66 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { AuthContext } from '../../context/authcontext'
-import { Navigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom'
 import VideoMeet from './videomeet'
+
 
 export default function ProtectedMeeting() {
     const [valid, setValid] = useState(null)
-    const { checkMeeting } = useContext(AuthContext)
+    const { checkMeeting, guestUserMeeting } = useContext(AuthContext)
     const { meetingCode } = useParams()
     const token = localStorage.getItem('token')
-
-    if(!token){
+    const location = useLocation()
+    const [searchParams] = useSearchParams()
+    const isCreating = searchParams.get('type') === 'create';
     useEffect(() => {
-        console.log(checkMeeting())
-        console.log(meetingCode)
-        let checkRoute = async () => {
-            let result = await checkMeeting(meetingCode)
-            console.log(result)
-            if (result) {
-                setValid(result)
-            } else {
-                setValid(false)
+        if (!token && !isCreating) {
+
+
+            let checkRoute = async () => {
+                let result = await checkMeeting(meetingCode)
+                if (result) {
+                    setValid(result)
+                } else {
+                    setValid(false)
+                }
             }
+
+            checkRoute()
+
         }
-        checkRoute()
+        if (token && isCreating) {
+            setValid(true)
+        }
+        if (token && !isCreating) {
+            let checkRoute = async () => {
+                let result = await guestUserMeeting(meetingCode)
+                if (result) {
+
+                    setValid(result)
+                } else {
+
+                    setValid(false)
+                }
+            }
+            checkRoute()
+        }
+        if (!token && isCreating) {
+            setValid(false)
+        }
     }, [meetingCode])
 
 
     if (valid === null) {
         return <p>Still Loading.....</p>
     }
-    if (valid=== false) {
-        console.log("this executed")
-        return <Navigate to="/" replace />
+    else if (valid === false) {
+        const pathName = location.pathname
+        return <Navigate to="/" replace state={{ from: pathName }} />
+
+    }
+    else {
+
+        return <VideoMeet />
     }
 }
-    return <VideoMeet />
 
-}

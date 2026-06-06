@@ -43,6 +43,8 @@
     width: 100%;
     height: 80vh;
     display: flex;
+    justify-content: center;
+    /* align-items: center; */
 }
 
 .left,
@@ -186,6 +188,16 @@
     border: 1px solid rgba(255, 255, 255, 0.555);
 }
 
+    .errorHomestyle {
+        display: none;
+        backdrop-Filter: blur(5px);
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        z-index: 3;
+    }
 
 @media(max-width:786px) {
     .homestyle {

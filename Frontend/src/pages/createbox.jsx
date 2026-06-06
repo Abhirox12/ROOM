@@ -3,13 +3,14 @@ import { AuthContext } from '../../context/authcontext'
 import { useNavigate } from 'react-router-dom'
 
 
-export default function createbox({ style, meetingCode, display, switchButton }) {
+export default function createbox({ style, display, switchButton, meetingCode }) {
   const { handleCreateMeeting } = useContext(AuthContext)
   let router = useNavigate()
 
   let createMeeting = async (e) => {
-
-    router(`/${meetingCode}?type=create`)
+    if (meetingCode) {
+      router(`/${meetingCode}?type=create`)
+    }
   }
 
 
@@ -26,7 +27,7 @@ export default function createbox({ style, meetingCode, display, switchButton })
 
             <p>Your meeting code is: ${meetingCode} </p>
             <button className='creating-room' onClick={createMeeting}>Create Room</button>
-            <button className='switch-to-join'onClick={switchButton}>Join Room</button>
+            <button className='switch-to-join' onClick={switchButton}>Join Room</button>
           </div>
         </div>
       </div>

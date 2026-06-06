@@ -16,7 +16,7 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { jwtDecode } from "jwt-decode"
 
 
-let server_url = "https://192.168.1.4:3000/"
+let server_url = "https://192.168.1.5:3000/"
 var connections = {}
 const peerConfigConnections = {
   iceServers: [
@@ -79,7 +79,6 @@ export default function VideoMeet() {
   }, [])
 
   useEffect(() => {
-    // console.log(token)
     if (token === null) {
       setTokenValue(false);
     }
@@ -95,18 +94,34 @@ export default function VideoMeet() {
 
     window.addEventListener('resize', handleResize)
 
-    // cleanup
     return () => {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (video !== undefined && audio !== undefined && socketRef.current) {
-  //     getUserMedia()
-  //   }
-  // }, [audio, video])
+  useEffect(() => {
+    return async() => {
+      console.log("Video call page unmounted");
 
+      if (window.localStream) {
+        window.localStream.getTracks().forEach(track => {
+          track.stop();
+        });
+      }
+      window.localStream = null;
+      for (let id in connections) {
+        connections[id]?.close();
+        delete connections[id];
+      }
+
+      socketRef.current?.disconnect();
+    };
+  }, []);
+  useEffect(()=>{
+    return ()=>{
+      handleCallEnd
+    }
+  },[])
   let black = ({ width = window.innerWidth, height = window.innerHeight } = {}) => {
     if (blackIntervalRef.current) {
       clearInterval(blackIntervalRef.current)
@@ -130,6 +145,9 @@ export default function VideoMeet() {
   // ─── Permissions ───────────────────────────────────────────────────────────
 
   const getPermissions = async () => {
+    if (window.localStream) {
+      window.localStream.getTracks().forEach(track => track.stop());
+    }
     try {
       try {
         await navigator.mediaDevices.getUserMedia({ video: true })
@@ -167,7 +185,9 @@ export default function VideoMeet() {
   // ─── Get user media then connect ───────────────────────────────────────────
 
   const getMedia = async () => {
-
+    if (window.localStream) {
+      window.localStream.getTracks().forEach(track => track.stop());
+    }
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -189,8 +209,6 @@ export default function VideoMeet() {
   // ─── Toggle tracks (mic / camera) ──────────────────────────────────────────
 
   const getUserMedia = () => {
-    console.log("video:", video, "audio:", audio)
-    console.log("videoAvailable:", videoAvailable, "audioAvailable:", audioAvailable)
     if ((video && videoAvailable) || (audio && audioAvailable)) {
       navigator.mediaDevices
         .getUserMedia({
@@ -383,19 +401,13 @@ export default function VideoMeet() {
   // ─── Socket + WebRTC ───────────────────────────────────────────────────────
 
   const connectToSocketServer = () => {
-    console.log("=== CONNECTING TO SOCKET ===")
-    console.log("server_url:", server_url)
-    console.log("meetingCode:", meetingCode)
     socketRef.current = io.connect(server_url)
 
     socketRef.current.on('signal', getMessageFromServer)
 
     socketRef.current.on('connect', () => {
-      console.log("=== SOCKET CONNECTED ===")
-      console.log("my socket id:", socketRef.current.id)
-      console.log("joining room:", meetingCode)
-      socketRef.current.emit('join-call', window.location.href)
-      roomIdRef.current = window.location.href
+      socketRef.current.emit('join-call', meetingCode)
+      roomIdRef.current = meetingCode
       socketIdRef.current = socketRef.current.id
 
       socketRef.current.on('chat-message', addMessage)
@@ -410,7 +422,6 @@ export default function VideoMeet() {
       })
     })
     socketRef.current.on('chat-history', (chatHistory) => {
-      console.log("history received:", chatHistory) // ← check this prints
       setMessages(chatHistory.map(m => ({
         sender: m.sender,
         data: m.data
@@ -418,16 +429,12 @@ export default function VideoMeet() {
     })
 
     socketRef.current.on('user-joined', (id, clients) => {
-      console.log("=== USER JOINED ===")
-      console.log("joined id:", id)
-      console.log("all clients:", clients)
-      console.log("my id:", socketIdRef.current)
       clients.forEach(socketListId => {
         if (socketListId === socketIdRef.current) return
         if (connections[socketListId]) return
 
         // Create a new symmetric peer connection for every peer
-        connections[socketListId] = new RTCPeerConnection(peerConfigConnections)
+        connections[socketListId] = new RTCPeerConnection(peerConfigConnections);
 
         // ICE candidates — symmetric for both sides
         connections[socketListId].onicecandidate = (event) => {
@@ -685,7 +692,6 @@ export default function VideoMeet() {
     setAskForUsername(false)
     getMedia()
     if (token) {
-      console.log(token)
       const decoded = jwtDecode(token)
       setUsername(decoded.name)
 

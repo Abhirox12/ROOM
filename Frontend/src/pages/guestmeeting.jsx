@@ -1,17 +1,37 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../context/authcontext'
-import { useNavigate } from 'react-router-dom'
-export default function Guestmeeting({ style, switchButton, display, token, create }) {
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+export default function Guestmeeting({ style, switchButton, display, token, create, setErrorDisplay, setErrorText, setJoinMeet }) {
   const [meetingCode, setMeetingCode] = useState("")
   let routeto = useNavigate()
-  const { guestUserMeeting } = useContext(AuthContext)
+  const { checkMeeting, guestUserMeeting } = useContext(AuthContext)
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
+  const isCreating = searchParams.get('type') === 'create';
   let joiningMeeting = async (e) => {
     try {
       e.preventDefault()
-      console.log("checking guest connection")
-      let result = await guestUserMeeting(meetingCode)
-      console.log(result)
-      routeto(`/${meetingCode}`)
+      if (!meetingCode) {
+        setErrorDisplay(true)
+        let result = "please enter meeting Code"
+        setJoinMeet(true)
+        setErrorText(result)
+        return
+      }
+      if (!token & !isCreating) {
+        const result = await guestUserMeeting(meetingCode)
+        if (result !== "Joining meeting") {
+          setErrorDisplay(true)
+          setErrorText(result)
+        }
+      }
+      const exists = await checkMeeting(meetingCode)
+      if (exists) {
+        routeto(`/${meetingCode}`)
+      } else {
+        setErrorDisplay(true)
+        setJoinMeet(false)
+      }
     } catch (error) {
 
     }

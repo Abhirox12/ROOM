@@ -1,18 +1,18 @@
 import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../context/authcontext'
+import AuthError from "./AuthError.jsx"
 
 
-export default function login({ style, switchguest, displayer }) {
+export default function Login({ style, switchguest, displayer, setErrorDisplay, setErrorText }) {
   const [display, setDisplay] = useState(true)
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+
   const [message, setMessage] = useState('')
   const { handleLogin, handleRegister } = useContext(AuthContext)
   let loginSignupSwitch = () => {
-    // console.log(display)
     setDisplay(!display)
     setName("")
     setPassword("")
@@ -23,16 +23,25 @@ export default function login({ style, switchguest, displayer }) {
     try {
       if (display === true) {
         let result = await handleLogin(username, password)
-        console.log(result)
-
+        if (result !== "login done") {
+          setErrorText(result)
+          setErrorDisplay(true)
+          setUsername("")
+          setPassword("")
+        }
       }
       if (display === false) {
         let result = await handleRegister(name, username, email, password)
-        console.log(result)
-        loginSignupSwitch();
-        setName("")
-        setPassword("")
-        setError("")
+        if (result === "New user Registered") {
+          loginSignupSwitch();
+          setErrorText(result)
+          setErrorDisplay(true)
+          setName("")
+          setPassword("")
+        } else {
+          setErrorText(result)
+          setErrorDisplay(true)
+        }
 
       }
     } catch (error) {
@@ -40,12 +49,20 @@ export default function login({ style, switchguest, displayer }) {
       setError(message)
     }
   }
+  let forgetPass = (e) => {
+    e.preventDefault()
+    setErrorDisplay(true)
+    setErrorText("This Feature Will be available soon")
+  }
+
 
 
 
   return (
     <div className='Userlog' style={style}>
+
       <div className="cross" onClick={displayer}>x</div>
+
       <div className="userlogbox">
 
         <h1><span style={{ color: display ? "purple" : "white", fontWeight: display ? "600" : "400" }}>Login</span>
@@ -63,7 +80,7 @@ export default function login({ style, switchguest, displayer }) {
               <input type="password" id='password' name='password' value={password} onChange={(e) => setPassword(e.target.value)} />
               <br />
               <button className='login-btn' onClick={handleAuth}>Login</button>
-              <button className='forget-password'>Forget password?</button>
+              <button className='forget-password' onClick={forgetPass}>Forget password?</button>
             </form>
             <div className='loginboxbtn'>
               <button className='switch-to-guest' onClick={switchguest}>Guestlogin</button>

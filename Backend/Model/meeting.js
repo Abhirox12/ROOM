@@ -6,10 +6,10 @@ const meetingSchema = new Schema({
         type: String,
         required: true
     },
-    joiner:{
-        type:Schema.Types.ObjectId,
-        ref:"Guest"
-    },
+    joiner: [{
+        type: Schema.Types.ObjectId,
+        ref: "Guest"
+    }],
     meetingCode: {
         type: String,
         required: true
@@ -22,4 +22,4 @@ const meetingSchema = new Schema({
 
 const Meeting = mongoose.model("Meeting", meetingSchema);
 
-export {Meeting}
+export { Meeting }

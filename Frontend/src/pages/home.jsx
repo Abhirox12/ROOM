@@ -1,24 +1,37 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState,useEffect } from 'react'
 // import withAuth from '../../utilities/authguard'
 import styles from "../Css files/home.module.css"
 import { jwtDecode } from "jwt-decode"
 import JoinMeeting from './guestmeeting'
-import CreateMeeting from './createbox'
+import Error from './error'
+import CreateMeeting from './Createbox'
 import { v4 as uuidv4 } from 'uuid'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 
 
 
 function Home() {
+    let location = useLocation()
+    const ifFrom = location.state?.from
+    let [checkCode, setCheckCode] = useState("")
     let [create, setCreate] = useState(false)
     let [join, setJoin] = useState(false)
     let [image, setImage] = useState(true)
-
+    let [joinMeet,setJoinMeet] = useState(false)
+    const navigate = useNavigate()
+    const [errorDisplay, setErrorDisplay] = useState(ifFrom ? true : false)
+    useEffect(() => {
+        if (ifFrom) {
+            navigate('/', { replace: true, state: null })
+        }
+    }, [])
     const token = localStorage.getItem('token')
-    // const decoded = jwtDecode(token)
+    const decoded = jwtDecode(token)
 
     const createMeetingCode = () => {
         const meetingCode = uuidv4().slice(0, 8)
+        setCheckCode(meetingCode)
         return meetingCode;
     }
 
@@ -34,16 +47,29 @@ function Home() {
     const gueststyle = {
         display: create ? "flex" : "none"
     }
+    const errorstyle = {
+        display: errorDisplay ? "flex" : "none",
+        backgroundColor: "rgb(64 18 94)",
+        color: "white"
+    }
+
 
     let switchjoincreate = () => {
         setJoin(!join)
     }
     const isblur = () => {
-    if (create === true || join === true) {
-      return "block"
+        if (create === true || join === true) {
+            return "block"
+        }
     }
-  }
-
+    const isErrorBgBlur = () => {
+        if (errorDisplay === true) {
+            return 'block'
+        }
+    }
+    let errorHide = () => {
+        setErrorDisplay(false)
+    }
 
     let switchButton = () => {
         setCreate(!create)
@@ -53,16 +79,13 @@ function Home() {
             setImage(false)
             setJoin(true)
             setCreate(false)
-            console.log("j1")
         } else if (image === true && join === false) {
             setImage(false)
             setJoin(true)
             setCreate(false)
-            console.log("j2")
         } else if (image === false && join === true & create === false) {
             setJoin(false)
             setImage(true)
-            console.log("j3")
         }
 
 
@@ -71,16 +94,13 @@ function Home() {
         if (image === false && join === true && create === true) {
             setJoin(false)
             setImage(true)
-            console.log("c1")
         } else if (image === true && join === false) {
             setImage(false)
             setJoin(true)
             setCreate(true)
             createMeetingCode()
-            console.log("c2")
         } else if (image === false && join === true & create === false) {
             setCreate(true)
-            console.log("c3")
         }
     }
 
@@ -94,7 +114,8 @@ function Home() {
 
     return (
         <div className={styles.homepage}>
-            <div className={styles.homestyle} style={{display:isblur()}}></div>
+            <div className={styles.homestyle} style={{ display: isblur() }}></div>
+            <div className={styles.errorHomestyle} style={{ display: isErrorBgBlur() }}></div>
             <nav className={styles.nav}>
                 <ul className={styles.navleft}>
                     <img src="./images/LogoHome.png" className={styles.Logo} alt="" />
@@ -106,8 +127,9 @@ function Home() {
                 </ul>
             </nav>
             <div className={styles.mainbox}>
+                <Error display={errorHide} style={errorstyle} joinMeet={joinMeet} />
                 <div className={styles.left}>
-                    <h1><span>Hi, Abhimanyu!&nbsp;</span> <span> Ready to Connect?</span></h1>
+                    <h1><span>Hi, {decoded.name}!&nbsp;</span> <span> Ready to Connect?</span></h1>
                     <div className={styles.buttonbox}>
 
                         <button className={styles.room} onClick={createShow}>Create Room</button>
@@ -121,9 +143,9 @@ function Home() {
                         :
 
                         create ?
-                            <CreateMeeting meetingCode={createMeetingCode()} switchButton={switchButton} display={hide} style={styles.createbox} />
+                            <CreateMeeting meetingCode={checkCode} switchButton={switchButton} display={hide} style={styles.createbox} />
                             :
-                            <JoinMeeting style={joinstyle} create={create} switch={switchjoincreate} switchButton={switchButton} token={token} display={hide} />
+                            <JoinMeeting setJoinMeet={setJoinMeet} setErrorDisplay={setErrorDisplay} style={joinstyle} create={create} switch={switchjoincreate} switchButton={switchButton} token={token} display={hide} />
 
                     }
                 </div>
@@ -136,10 +158,10 @@ function Home() {
                         <p>Home</p>
                     </li>
                     <li><span><i className="fa-solid fa-clock-rotate-left"></i></span>
-                    <p>History</p>
+                        <p>History</p>
                     </li>
 
-                    
+
                 </ul>
             </div>
         </div>

@@ -60,21 +60,3 @@ app.get("/",(req,res)=>{
 httpServer.listen(3000);
 
 
-
-
-
-
-
-
-// app.get("/registerUser", async (req, res) => {
-//   try {
-//     let fakeuser = new User({
-//       username: "delta-student",
-//     });
-//     let result = await fakeuser.save();
-//     res.send(result);
-//   } catch (err) {
-//     console.log("ERROR:", err);
-//     res.send("error");
-//   }
-// });
