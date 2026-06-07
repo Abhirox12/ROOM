@@ -19,43 +19,43 @@ export default function Landingpage() {
   const [intro, setIntro] = useState(true)
   const [errorText, setErrorText] = useState("")
   const [codeErrorDisplay, setCodeErrorDisplay] = useState(ifFrom ? true : false)
-  const [connected, setConnected] = useState(false);
+  const [connected, setConnected] = useState(true)
 
-useEffect(() => {
-  const checkServer = async () => {
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/health`
-      );
+  useEffect(() => {
+    const checkServer = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/health`
+        );
 
-      if (res.ok) {
-        setConnected(true);
+        if (res.ok) {
+          setConnected(false);
 
-        setTimeout(() => {
-          setIntro(false);
-        }, 4000);
+          setTimeout(() => {
+            setIntro(false);
+          }, 2000);
 
-        return true;
+          return true;
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
 
-    return false;
-  };
+      return false;
+    };
 
-  checkServer();
+    checkServer();
 
-  const interval = setInterval(async () => {
-    const success = await checkServer();
+    const interval = setInterval(async () => {
+      const success = await checkServer();
 
-    if (success) {
-      clearInterval(interval);
-    }
-  }, 3000);
+      if (success) {
+        clearInterval(interval);
+      }
+    }, 3000);
 
-  return () => clearInterval(interval);
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
 
   useEffect(() => {
@@ -124,23 +124,23 @@ useEffect(() => {
       </div>
       <div className="landingstyle1" style={{ display: isAuthBlur() }}>
       </div>
-      <div className='autherror' style={{ display: intro ? "flex" : "none" }}>
-        {!connected ? (
+      <div className='serverLoader' style={{ display: intro ? "flex" : "none" }}>
+        {connected ? (
           <>
-            <div className="spinner"></div>
             <p>
               Connecting to server...
-              <br />
-              First visit may take up to 60 seconds.
+              The backend may take up to 60 seconds to wake up.
+              Thanks for Waiting
             </p>
+            <div>
+              <div className="spinner"></div>
+            </div>
           </>
 
         ) : (
           <>
-            <div className="errorCross" onClick={() => {
-              setIntro(false)
-            }}>x</div>
             <p>🟢 Server connected</p>
+        
           </>
 
         )
