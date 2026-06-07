@@ -706,23 +706,40 @@ export default function VideoMeet() {
     <div>
       {askForUsername ? (
         tokenValue ?
-          <div>
-            <video ref={localVideoRef} muted autoPlay style={{ width: 300 }} />
-            <br />
-            <button onClick={connect}>Enter</button>
+          <div style={{ background: "linear-gradient(135deg, #0a0010, #1a0030, #0d0020)", width: "100vw", height: "100vh", boxSizing: "border-box" }}>
+            <img src="../images/Logo.png" style={{ display: 'flex', width: "200px", padding: '1rem' }} alt="" className='Logo' />
+            <div className='lobby'>
+              <div className="videoBox">
+                <video ref={localVideoRef} muted autoPlay />
+              </div>
+              <div className="otherBox">
+                <div>
+                  <p>Ready to join?</p>
+                  <button onClick={connect}>Enter</button>
+                </div>
+              </div>
+            </div>
           </div>
           :
-          <div>
-            <h1>Enter Lobby</h1>
-            <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-            />
-            <button onClick={connect}>Enter</button>
-            <br />
-            <video ref={localVideoRef} autoPlay muted style={{ width: 300 }} />
+          <div style={{ background: "linear-gradient(135deg, #0a0010, #1a0030, #0d0020)", width: "100vw", height: "100vh", boxSizing: "border-box" }}>
+            <img src="../images/Logo.png" style={{ display: 'flex', width: "200px", padding: '1rem' }} alt="" className='Logo' />
+            <div className='lobby'>
+              <div className="videoBox">
+                <video ref={localVideoRef} muted autoPlay />
+              </div>
+              <div className="otherBox">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Enter Your Username"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                  />
+                <button onClick={connect}>Enter</button>
+                </div>
+              </div>
+
+            </div>
           </div>
       ) : (
         <div className={styles.mainContainer}>
