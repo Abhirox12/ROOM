@@ -16,7 +16,7 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { jwtDecode } from "jwt-decode"
 
 
-let server_url = "https://192.168.1.5:3000/"
+let server_url = "https://192.168.1.3:3000/"
 var connections = {}
 const peerConfigConnections = {
   iceServers: [
@@ -100,7 +100,7 @@ export default function VideoMeet() {
   }, [])
 
   useEffect(() => {
-    return async() => {
+    return async () => {
       console.log("Video call page unmounted");
 
       if (window.localStream) {
@@ -117,11 +117,11 @@ export default function VideoMeet() {
       socketRef.current?.disconnect();
     };
   }, []);
-  useEffect(()=>{
-    return ()=>{
+  useEffect(() => {
+    return () => {
       handleCallEnd
     }
-  },[])
+  }, [])
   let black = ({ width = window.innerWidth, height = window.innerHeight } = {}) => {
     if (blackIntervalRef.current) {
       clearInterval(blackIntervalRef.current)
@@ -665,10 +665,7 @@ export default function VideoMeet() {
     }
   }
   const videoModel = {
-    if(isMobile = false) {
-
-      width: modal ? "70%" : "100%"
-    }
+    width: !isMobile && modal ? "70%" : "100%"
   }
   const chatModel = {
     display: modal ? "flex" : "none"

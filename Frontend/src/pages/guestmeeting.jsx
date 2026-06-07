@@ -12,13 +12,13 @@ export default function Guestmeeting({ style, switchButton, display, token, crea
     try {
       e.preventDefault()
       if (!meetingCode) {
-        setErrorDisplay(true)
         let result = "please enter meeting Code"
-        setJoinMeet(true)
+        setErrorDisplay(true)
         setErrorText(result)
+        setJoinMeet(true)
         return
       }
-      if (!token & !isCreating) {
+      if (!token && !isCreating) {
         const result = await guestUserMeeting(meetingCode)
         if (result !== "Joining meeting") {
           setErrorDisplay(true)

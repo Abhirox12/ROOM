@@ -1,4 +1,4 @@
-import React, { useContext, useState,useEffect } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 // import withAuth from '../../utilities/authguard'
 import styles from "../Css files/home.module.css"
 import { jwtDecode } from "jwt-decode"
@@ -18,9 +18,11 @@ function Home() {
     let [create, setCreate] = useState(false)
     let [join, setJoin] = useState(false)
     let [image, setImage] = useState(true)
-    let [joinMeet,setJoinMeet] = useState(false)
+    let [joinMeet, setJoinMeet] = useState(false)
     const navigate = useNavigate()
     const [errorDisplay, setErrorDisplay] = useState(ifFrom ? true : false)
+    const [historyBoxDisplay, setHistoryBoxDisplay] = useState("")
+    const [errorText, setErrorText] = useState("")
     useEffect(() => {
         if (ifFrom) {
             navigate('/', { replace: true, state: null })
@@ -58,12 +60,12 @@ function Home() {
         setJoin(!join)
     }
     const isblur = () => {
-        if (create === true || join === true) {
+        if (create === true || join === true ) {
             return "block"
         }
     }
     const isErrorBgBlur = () => {
-        if (errorDisplay === true) {
+        if (errorDisplay === true || historyBoxDisplay === true) {
             return 'block'
         }
     }
@@ -109,8 +111,14 @@ function Home() {
         setJoin(false);
         setImage(true)
     }
+    let historyFeature = (e) => {
+        e.preventDefault()
+        setHistoryBoxDisplay(!historyBoxDisplay)
+    }
 
-
+    let historyStyle = {
+        display: historyBoxDisplay ? "flex" : "none"
+    }
 
     return (
         <div className={styles.homepage}>
@@ -122,12 +130,29 @@ function Home() {
                     <li className={styles.Hometab}>Home</li>
                 </ul>
                 <ul className={styles.navright}>
-                    <li className={styles.HistoryTab}>History</li>
+                    <li className={styles.HistoryTab} onClick={historyFeature}>History</li>
                     <li onClick={logout} className={styles.Logout}>Logout</li>
                 </ul>
             </nav>
             <div className={styles.mainbox}>
                 <Error display={errorHide} style={errorstyle} joinMeet={joinMeet} />
+                <div style={historyStyle} className="error">
+
+
+                    <div className="errorCross" onClick={() => { setHistoryBoxDisplay(false) }}>x</div>
+                    <div className="errorBox">
+
+                        <h3>
+                            This Feature will be available soon
+                        </h3>
+
+                    </div>
+
+
+
+
+
+                </div>
                 <div className={styles.left}>
                     <h1><span>Hi, {decoded.name}!&nbsp;</span> <span> Ready to Connect?</span></h1>
                     <div className={styles.buttonbox}>
@@ -157,7 +182,7 @@ function Home() {
                         <span><i className="fa-regular fa-house"></i></span>
                         <p>Home</p>
                     </li>
-                    <li><span><i className="fa-solid fa-clock-rotate-left"></i></span>
+                    <li onClick={historyFeature}><span><i className="fa-solid fa-clock-rotate-left"></i></span>
                         <p>History</p>
                     </li>
 

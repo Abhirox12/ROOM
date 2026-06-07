@@ -3,7 +3,7 @@ import { AuthContext } from '../../context/authcontext'
 import { useNavigate } from 'react-router-dom'
 
 
-export default function createbox({ style, display, switchButton, meetingCode }) {
+export default function Createbox({ style, display, switchButton, meetingCode }) {
   const { handleCreateMeeting } = useContext(AuthContext)
   let router = useNavigate()
 

@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 import { useContext, createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"
+const token = localStorage.getItem("token")
 
 
 
@@ -10,7 +11,7 @@ export const AuthContext = createContext({})
 
 const client = axios.create({
 
-    baseURL: "https://192.168.1.5:3000/"
+    baseURL: "https://192.168.1.3:3000/"
 }
 )
 
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }) => {
                 router("/home")
             }
         } catch (error) {
-            if(error.response?.status === 400 || error.response?.status === httpStatus.NOT_FOUND || error.response?.status === 401){
+            if (error.response?.status === 400 || error.response?.status === httpStatus.NOT_FOUND || error.response?.status === 401) {
                 return error.response.data.message
             }
         }
@@ -95,7 +96,13 @@ export const AuthProvider = ({ children }) => {
         try {
             let request = await client.get(`/check/${meetingCode}`, {
                 meetingCode: meetingCode,
-            })
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
             if (request.status === 200) {
 
                 return true
@@ -108,7 +115,7 @@ export const AuthProvider = ({ children }) => {
 
 
     const guestUserMeeting = async (meetingCode) => {
-        if(meetingCode){
+        if (meetingCode) {
 
             try {
                 let request = await client.post(`/guestjoin/${meetingCode}`, {
@@ -117,10 +124,10 @@ export const AuthProvider = ({ children }) => {
                 if (request.status === 200) {
                     return true
                 }
-                
-            } catch(error) {
-                if(error.response?.status === 400 || error.response?.status === httpStatus.NOT_FOUND ){
-                    return error.response.data.message  
+
+            } catch (error) {
+                if (error.response?.status === 400 || error.response?.status === httpStatus.NOT_FOUND) {
+                    return error.response.data.message
                 }
             }
         }

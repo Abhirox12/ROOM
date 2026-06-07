@@ -46,7 +46,8 @@ export default function Login({ style, switchguest, displayer, setErrorDisplay, 
       }
     } catch (error) {
       let message = (error)
-      setError(message)
+      setErrorDisplay(true)
+      setErrorText(message)
     }
   }
   let forgetPass = (e) => {
