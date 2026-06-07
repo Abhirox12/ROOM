@@ -25,7 +25,7 @@ export default function Createbox({ style, display, switchButton, meetingCode })
           <h1>Create Room</h1>
           <div>
 
-            <p>Your meeting code is: ${meetingCode} </p>
+            <p>Your meeting code is: {meetingCode} </p>
             <button className='creating-room' onClick={createMeeting}>Create Room</button>
             <button className='switch-to-join' onClick={switchButton}>Join Room</button>
           </div>

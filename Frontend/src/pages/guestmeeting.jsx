@@ -27,7 +27,9 @@ export default function Guestmeeting({ style, switchButton, display, token, crea
       }
       const exists = await checkMeeting(meetingCode)
       if (exists) {
+        setErrorDisplay(false)
         routeto(`/${meetingCode}`)
+        
       } else {
         setErrorDisplay(true)
         setJoinMeet(false)

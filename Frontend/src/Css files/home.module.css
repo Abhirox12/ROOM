@@ -116,7 +116,7 @@
 .createbox {
     z-index: 2;
     background-color: rgba(196, 8, 8, 0);
-    background-image: url(./images/image.png);
+    background-image: url(../../images/image.png);
     opacity: 1;
     background-size: cover;
     width: clamp(300px, 30%, 40vw);
