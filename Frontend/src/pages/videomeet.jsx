@@ -16,7 +16,7 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import { jwtDecode } from "jwt-decode"
 
 
-let server_url = "https://192.168.1.3:3000/"
+const server_url = import.meta.env.VITE_SOCKET_URL
 var connections = {}
 const peerConfigConnections = {
   iceServers: [

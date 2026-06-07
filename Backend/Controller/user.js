@@ -92,12 +92,15 @@ const guestUserMeeting = async (req, res) => {
     }
 }
 const createMeeting = async (req, res) => {
-    let { meetingCode, guest, Hostname } = req.body;
-    let meeting = await Meeting.findOne({ meetingCode })
-    if (meeting) {
-        return res.status(409).json({ message: "meeting already exists" })
-    }
+    let { meetingCode, Hostname } = req.body;
     try {
+        if (!meetingCode || !Hostname) {
+            return res.status(400).json({ message: "meetingCode and Hostname are required" })
+        }
+        let meeting = await Meeting.findOne({ meetingCode })
+        if (meeting) {
+            return res.status(409).json({ message: "meeting already exists" })
+        }
         const meeting1 = new Meeting({ Hostname, meetingCode })
         let saved = await meeting1.save()
         res.status(200).json({ message: "meeting created" })
@@ -107,8 +110,23 @@ const createMeeting = async (req, res) => {
 
     }
 }
-const joinMeeting = async (req, res) => {
 
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers.authorization
+
+    if (!authHeader) {
+        return res.status(401).json({ message: "token missing" })
+    }
+
+    const token = authHeader.split(" ")[1]
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        req.user = decoded
+        next()
+    } catch (err) {
+        return res.status(401).json({ message: "invalid token" })
+    }
 }
 
 const checkMeeting = async (req, res) => {
@@ -121,4 +139,4 @@ const checkMeeting = async (req, res) => {
     return res.status(404).json({ valid: false })
 }
 
-export { register, login, guestUserMeeting, createMeeting, checkMeeting, joinMeeting } 
+export { register, login, guestUserMeeting, createMeeting, checkMeeting, verifyToken } 

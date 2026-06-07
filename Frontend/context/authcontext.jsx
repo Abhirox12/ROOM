@@ -11,7 +11,7 @@ export const AuthContext = createContext({})
 
 const client = axios.create({
 
-    baseURL: "https://192.168.1.3:3000/"
+    baseURL: import.meta.env.VITE_API_URL
 }
 )
 

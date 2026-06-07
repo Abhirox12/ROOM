@@ -7,15 +7,13 @@ let connections = {}
 export const connectToSocket = (server) => {
     const io = new Server(server, {
         cors: {
+            origin: process.env.FRONTEND_URL,
             methods: ["GET", "POST"],
-            origin: "*",
             credentials: true
         }
     })
 
     io.on("connection", (socket) => {
-        console.log("someone connected");
-        // console.log(socket)
         socket.on("join-call", (roomId) => {
             socket.join(roomId)
             socket.emit("chat-history", messages[roomId] || [])
@@ -53,7 +51,7 @@ export const connectToSocket = (server) => {
                 }
             })
         })
-        
+
     })
 
 

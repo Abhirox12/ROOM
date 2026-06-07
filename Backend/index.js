@@ -3,10 +3,8 @@ dotenv.config()
 import express from "express";
 import mongoose from "mongoose";
 import path from "path";
-import { createServer } from "node:https";
+import { createServer } from "node:http";
 import { connectToSocket } from "./Controller/socket.js";
-import fs from "fs"
-
 import { fileURLToPath } from "url";
 import userRouter from "./routes/userRoutes.js";
 import cors from "cors";
@@ -16,21 +14,21 @@ const __filename = fileURLToPath(import.meta.url);
 
 // recreate __dirname
 const __dirname = path.dirname(__filename);
-
+const PORT = process.env.PORT || 3000
 const app = express();
-const httpServer = createServer({
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
-},app)
+const httpServer = createServer(app)
 const io = connectToSocket(httpServer)
 
-app.use(cors())
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}))
 app.use(express.static(path.join(__dirname, "Public")))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", userRouter)
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1/room');
+  await mongoose.connect(process.env.MONGO_URL)
 }
 
 main().then(() => {
@@ -52,11 +50,12 @@ io.on("connection", (socket) => {
 
   socket.emit('welcome', 'Hello from server');
 });
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
   res.send("connected")
 })
 
 
-httpServer.listen(3000);
-
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
 
