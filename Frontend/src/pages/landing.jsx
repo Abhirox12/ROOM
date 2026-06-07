@@ -25,7 +25,7 @@ export default function Landingpage() {
     const checkServer = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_API_URL}/health`
+          `${import.meta.env.VITE_API_URL}health`
         );
 
         if (res.ok) {
