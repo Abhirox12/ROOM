@@ -14,26 +14,63 @@ export default function Landingpage() {
   const ifFrom = location.state?.from
   const [ldisplay, lsetDisplay] = useState(false)
   const [gdisplay, gsetDisplay] = useState(false)
-  const [display, setdisplay] = useState(false)
   const navigate = useNavigate()
   const [ErrorDisplay, setErrorDisplay] = useState(false)
+  const [intro, setIntro] = useState(true)
   const [errorText, setErrorText] = useState("")
-
   const [codeErrorDisplay, setCodeErrorDisplay] = useState(ifFrom ? true : false)
-  const [from, setFrom] = useState(false)
+  const [connected, setConnected] = useState(false);
+
+useEffect(() => {
+  const checkServer = async () => {
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/health`
+      );
+
+      if (res.ok) {
+        setConnected(true);
+
+        setTimeout(() => {
+          setIntro(false);
+        }, 4000);
+
+        return true;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+    return false;
+  };
+
+  checkServer();
+
+  const interval = setInterval(async () => {
+    const success = await checkServer();
+
+    if (success) {
+      clearInterval(interval);
+    }
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, []);
+
+
   useEffect(() => {
     if (ifFrom) {
       navigate('/', { replace: true, state: null })
     }
   }, [])
   const isblur = () => {
-    if (ldisplay === true || gdisplay === true || codeErrorDisplay === true ) {
+    if (ldisplay === true || gdisplay === true || codeErrorDisplay === true) {
       return "block"
     }
   }
-  const isAuthBlur =()=>{
-    if( ErrorDisplay === true){
-            return "block"
+  const isAuthBlur = () => {
+    if (ErrorDisplay === true) {
+      return "block"
     }
   }
 
@@ -86,6 +123,28 @@ export default function Landingpage() {
       <div className="landingstyle" style={{ display: isblur() }}>
       </div>
       <div className="landingstyle1" style={{ display: isAuthBlur() }}>
+      </div>
+      <div className='autherror' style={{ display: intro ? "flex" : "none" }}>
+        {!connected ? (
+          <>
+            <div className="spinner"></div>
+            <p>
+              Connecting to server...
+              <br />
+              First visit may take up to 60 seconds.
+            </p>
+          </>
+
+        ) : (
+          <>
+            <div className="errorCross" onClick={() => {
+              setIntro(false)
+            }}>x</div>
+            <p>🟢 Server connected</p>
+          </>
+
+        )
+        }
       </div>
       <AuthError style={authErrorStyle} errorText={errorText} display={authErrorHide} />
       <Error display={errorHide} style={errorstyle} />
