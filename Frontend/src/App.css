@@ -88,7 +88,7 @@
   position: absolute;
   display: none;
   flex-direction: column;
-  background-image: url(./images/image.png);
+  background-image: url(../images/image.png);
   background-size: cover;
   position: absolute;
   font-family: 'Times New Roman', Times, serif;
@@ -98,7 +98,7 @@
 .guest {
   background-color: rgba(196, 8, 8, 0);
   font-family: "Poppins", sans-serif;
-  background-image: url(./images/image.png);
+  background-image: url(../images/image.png);
   opacity: 1;
   background-size: cover;
   width: clamp(300px, 30%, 400px);
