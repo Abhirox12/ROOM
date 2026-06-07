@@ -170,7 +170,7 @@ function Home() {
                         create ?
                             <CreateMeeting meetingCode={checkCode} switchButton={switchButton} display={hide} style={styles.createbox} />
                             :
-                            <JoinMeeting setJoinMeet={setJoinMeet} setErrorDisplay={setErrorDisplay} style={joinstyle} create={create} switch={switchjoincreate} switchButton={switchButton} token={token} display={hide} />
+                            <JoinMeeting setJoinMeet={setJoinMeet} setErrorText={setErrorText} setErrorDisplay={setErrorDisplay} style={joinstyle} create={create} switch={switchjoincreate} switchButton={switchButton} token={token} display={hide} />
 
                     }
                 </div>

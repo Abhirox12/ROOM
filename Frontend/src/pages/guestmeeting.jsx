@@ -20,9 +20,10 @@ export default function Guestmeeting({ style, switchButton, display, token, crea
       }
       if (!token && !isCreating) {
         const result = await guestUserMeeting(meetingCode)
-        if (result !== "Joining meeting") {
+        if (result !== true) {
           setErrorDisplay(true)
           setErrorText(result)
+          return
         }
       }
       const exists = await checkMeeting(meetingCode)
